@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Membership Map</title>
+
+    <!-- Mapbox section -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
+    
+    <!-- Leaflet section -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script type="importmap">
+        {
+            "imports": {
+                "leaflet": "https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.js"
+            }
+        }
+    </script>
+
+    <!--  -->
+    <style type="text/css">
+        body { margin: 0; padding: 0; }
+
+        /* Full-size devices */
+        @media (min-width: 767px) {
+            #mapbox { position: relative; top: 0; bottom: 0;  width: 50%; height: 557px;}
+            #leaflet { position: relative; top: 0; bottom: 0;  width: 50%; height: 557px;}
+        }
+
+        .mapboxgl-popup {
+            max-width: 400px;
+            font:
+                12px/20px 'Helvetica Neue',
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        .mapboxgl-canvas {
+            position: relative !important;
+        }
+    </style>
+</head>
+
+<body>
+<div id="mapbox">&nbsp;</div>
+<div id="leaflet"></div>
+
+<!-- Mapbox section -->
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYmpzMzM5IiwiYSI6ImNrbHpmMmR3dDFpZGwydXBiN2ZrbHZ0dHMifQ.IA-NgVSvNw9ay_C2MwnGew';
+    
+    var map = new mapboxgl.Map({
+        container: 'mapbox',
+        style: 'mapbox://styles/mapbox/standard',
+        projection: 'mercator',
+        renderWorldCopies: false,
+        maxBounds: new mapboxgl.LngLatBounds([-180, -55], [180, 75]),
+        center: new mapboxgl.LngLat(-89, 40),
+        zoom: 6
+    })
+
+    // Full screen control
+    map.addControl(new mapboxgl.FullscreenControl());
+
+    // Zoom and rotation controls
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // Add data
+    map.on('load', function () {
+        map.addSource('cities', {
+            'type': 'geojson',
+            'generateId': true,
+            'data': {
+                'type': 'FeatureCollection',
+                'name': 'cities',
+                'crs': { 'type': 'name', 'properties': { 'name': 'urn:ogc:def:crs:OGC:1.3:CRS84' } },
+                'features': [
+                    { 'type': 'Feature', 'properties': { 'ID': '1', 'City': 'Niles', 'State': 'IL', 'Count': 1, 'latlong': '42.0289319,-87.8122348' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8122348, 42.0289319 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '2', 'City': 'Edwardsville', 'State': 'IL', 'Count': 1, 'latlong': '38.8114364,-89.953157' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.953157, 38.8114364 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '3', 'City': 'Rossville', 'State': 'IL', 'Count': 1, 'latlong': '40.3792031,-87.6686342' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.6686342, 40.3792031 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '4', 'City': 'Hudson', 'State': 'IL', 'Count': 1, 'latlong': '40.6058688,-88.9872965' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.9872965, 40.6058688 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '5', 'City': 'Kenilworth', 'State': 'IL', 'Count': 1, 'latlong': '42.0894728,-87.7149295' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.7149295, 42.0894728 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '6', 'City': 'Troy', 'State': 'IL', 'Count': 1, 'latlong': '38.7292147,-89.8831541' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.8831541, 38.7292147 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '7', 'City': 'Loda', 'State': 'IL', 'Count': 1, 'latlong': '40.5175349,-88.0719857' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0719857, 40.5175349 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '8', 'City': 'Bloomington', 'State': 'IL', 'Count': 2, 'latlong': '40.4797828,-88.9939147' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.9939147, 40.4797828 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '9', 'City': 'Galesburg', 'State': 'IL', 'Count': 1, 'latlong': '40.9475652,-90.3712169' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.3712169, 40.9475652 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '10', 'City': 'Darien', 'State': 'IL', 'Count': 1, 'latlong': '41.7508713,-87.9739593' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9739593, 41.7508713 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '11', 'City': 'Chicago', 'State': 'IL', 'Count': 7, 'latlong': '41.8755616,-87.6244212' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.6244212, 41.8755616 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '12', 'City': 'Elmwood', 'State': 'IL', 'Count': 1, 'latlong': '40.7778151,-89.9665017' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.9665017, 40.7778151 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '13', 'City': 'Carlock', 'State': 'IL', 'Count': 1, 'latlong': '40.5822588,-89.1320251' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.1320251, 40.5822588 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '14', 'City': 'Arlington Heights', 'State': 'IL', 'Count': 1, 'latlong': '42.0811563,-87.9802164' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9802164, 42.0811563 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '15', 'City': 'Winnetka', 'State': 'IL', 'Count': 1, 'latlong': '42.1080703,-87.7365286' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.7365286, 42.1080703 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '16', 'City': 'Grayslake', 'State': 'IL', 'Count': 3, 'latlong': '42.3433518,-88.0412192' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0412192, 42.3433518 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '17', 'City': 'East Peoria', 'State': 'IL', 'Count': 2, 'latlong': '40.666149,-89.5800978' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.5800978, 40.666149 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '18', 'City': 'Normal', 'State': 'IL', 'Count': 4, 'latlong': '40.5092961,-88.9843937' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.9843937, 40.5092961 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '19', 'City': 'El Paso', 'State': 'IL', 'Count': 1, 'latlong': '40.7392018,-89.0164626' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.0164626, 40.7392018 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '20', 'City': 'Rochester Hills', 'State': 'MI', 'Count': 1, 'latlong': '42.6583661,-83.1499322' }, 'geometry': { 'type': 'Point', 'coordinates': [ -83.1499322, 42.6583661 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '21', 'City': 'Springfield', 'State': 'IL', 'Count': 3, 'latlong': '39.7990175,-89.6439575' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.6439575, 39.7990175 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '22', 'City': 'York', 'State': 'IL', 'Count': 1, 'latlong': '39.1714288,-87.6391922' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.6391922, 39.1714288 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '23', 'City': 'Rock Island', 'State': 'IL', 'Count': 1, 'latlong': '41.4411786,-90.5766144' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.5766144, 41.4411786 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '24', 'City': 'Victoria', 'State': 'Australia', 'Count': 1, 'latlong': '-36.5986096,144.6780052' }, 'geometry': { 'type': 'Point', 'coordinates': [ 144.6780052, -36.5986096 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '25', 'City': 'Glenview', 'State': 'IL', 'Count': 1, 'latlong': '42.0700662,-87.8114044' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8114044, 42.0700662 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '26', 'City': 'Ithaca', 'State': 'NY', 'Count': 1, 'latlong': '42.437417499999995,-76.54837235139263' }, 'geometry': { 'type': 'Point', 'coordinates': [ -76.548372351392629, 42.4374175 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '27', 'City': 'Marengo', 'State': 'IL', 'Count': 1, 'latlong': '42.250149,-88.6081303' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.6081303, 42.250149 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '28', 'City': 'Mount Prospect', 'State': 'IL', 'Count': 2, 'latlong': '42.0664167,-87.9372908' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9372908, 42.0664167 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '29', 'City': 'Evanston', 'State': 'IL', 'Count': 1, 'latlong': '42.0470043,-87.6846053' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.6846053, 42.0470043 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '30', 'City': 'Kildeer', 'State': 'IL', 'Count': 1, 'latlong': '42.1705807,-88.0478532' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0478532, 42.1705807 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '35', 'City': 'Red Bud', 'State': 'IL', 'Count': 1, 'latlong': '38.2117173,-89.9942741' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.9942741, 38.2117173 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '36', 'City': 'Harwood Heights', 'State': 'IL', 'Count': 1, 'latlong': '41.9669615,-87.8076726' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8076726, 41.9669615 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '38', 'City': 'Newburg', 'State': 'MO', 'Count': 1, 'latlong': '37.9142075,-91.9026607' }, 'geometry': { 'type': 'Point', 'coordinates': [ -91.9026607, 37.9142075 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '39', 'City': 'Woodridge', 'State': 'IL', 'Count': 1, 'latlong': '41.7563344,-88.045559' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.045559, 41.7563344 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '40', 'City': 'Charleston', 'State': 'IL', 'Count': 1, 'latlong': '39.4961458,-88.1761521' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.1761521, 39.4961458 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '41', 'City': 'Caseyville', 'State': 'IL', 'Count': 1, 'latlong': '38.6367162,-90.0256606' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.0256606, 38.6367162 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '43', 'City': 'Chatham', 'State': 'IL', 'Count': 1, 'latlong': '39.676163,-89.7045439' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.7045439, 39.676163 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '44', 'City': 'Metamora', 'State': 'IL', 'Count': 1, 'latlong': '40.7907409,-89.3614407' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.3614407, 40.7907409 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '45', 'City': 'Tremont', 'State': 'IL', 'Count': 3, 'latlong': '40.5275392,-89.4925979' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.4925979, 40.5275392 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '48', 'City': 'St. Charles', 'State': 'IL', 'Count': 2, 'latlong': '41.9139808,-88.3128183' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.3128183, 41.9139808 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '50', 'City': 'Sioux City', 'State': 'IA', 'Count': 1, 'latlong': '42.4966815,-96.4058782' }, 'geometry': { 'type': 'Point', 'coordinates': [ -96.4058782, 42.4966815 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '51', 'City': 'Mt Prospect', 'State': 'IL', 'Count': 1, 'latlong': '42.0664167,-87.9372908' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9372908, 42.0664167 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '54', 'City': 'Swansea', 'State': 'IL', 'Count': 1, 'latlong': '38.5339392,-89.9889936' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.9889936, 38.5339392 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '55', 'City': 'Urbana', 'State': 'IL', 'Count': 1, 'latlong': '40.1117174,-88.207301' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.207301, 40.1117174 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '56', 'City': 'McHenry', 'State': 'IL', 'Count': 1, 'latlong': '42.3294391,-88.4605713' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.4605713, 42.3294391 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '57', 'City': 'Maryland Heights', 'State': 'MO', 'Count': 1, 'latlong': '38.7150511,-90.435999' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.435999, 38.7150511 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '58', 'City': 'New Albany', 'State': 'IN', 'Count': 1, 'latlong': '38.2856247,-85.8241312' }, 'geometry': { 'type': 'Point', 'coordinates': [ -85.8241312, 38.2856247 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '59', 'City': 'OFallon', 'State': 'IL', 'Count': 1, 'latlong': '38.5922715,-89.9112124' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.9112124, 38.5922715 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '60', 'City': 'Thomson', 'State': 'IL', 'Count': 1, 'latlong': '41.9589158,-90.0992924' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.0992924, 41.9589158 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '61', 'City': 'Wilmette', 'State': 'IL', 'Count': 1, 'latlong': '42.076066,-87.7115555' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.7115555, 42.076066 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '62', 'City': 'Mt Sterling', 'State': 'IL', 'Count': 1, 'latlong': '39.9872707,-90.763463' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.763463, 39.9872707 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '63', 'City': 'Poplar Grove', 'State': 'IL', 'Count': 1, 'latlong': '42.3683522,-88.822047' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.822047, 42.3683522 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '64', 'City': 'Sand Lake', 'State': 'MI', 'Count': 1, 'latlong': '43.29238,-85.518073' }, 'geometry': { 'type': 'Point', 'coordinates': [ -85.518073, 43.29238 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '66', 'City': 'Hanover Park', 'State': 'IL', 'Count': 1, 'latlong': '41.9994722,-88.1450735' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.1450735, 41.9994722 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '67', 'City': 'Utica', 'State': 'IL', 'Count': 1, 'latlong': '41.3405897,-89.010081' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.010081, 41.3405897 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '68', 'City': 'Elk Grove Village', 'State': 'IL', 'Count': 1, 'latlong': '42.0087978,-87.9414608' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9414608, 42.0087978 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '69', 'City': 'Royal Palm Beach', 'State': 'FL', 'Count': 1, 'latlong': '26.7050822,-80.2279519' }, 'geometry': { 'type': 'Point', 'coordinates': [ -80.2279519, 26.7050822 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '70', 'City': 'Bryan', 'State': 'TX', 'Count': 1, 'latlong': '30.6743643,-96.3699632' }, 'geometry': { 'type': 'Point', 'coordinates': [ -96.3699632, 30.6743643 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '71', 'City': 'Naperville', 'State': 'IL', 'Count': 1, 'latlong': '41.7728699,-88.1479278' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.1479278, 41.7728699 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '72', 'City': 'Scottsdale', 'State': 'AZ', 'Count': 1, 'latlong': '33.4942189,-111.926018' }, 'geometry': { 'type': 'Point', 'coordinates': [ -111.926018, 33.4942189 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '73', 'City': 'Morton Grove', 'State': 'IL', 'Count': 1, 'latlong': '42.0405857,-87.7825696' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.7825696, 42.0405857 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '74', 'City': 'Elgin', 'State': 'IL', 'Count': 2, 'latlong': '42.03726,-88.2810994' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.2810994, 42.03726 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '75', 'City': 'Orland Hills', 'State': 'IL', 'Count': 1, 'latlong': '41.5853107,-87.8431078' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8431078, 41.5853107 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '76', 'City': 'Mokena', 'State': 'IL', 'Count': 1, 'latlong': '41.5261437,-87.8892189' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8892189, 41.5261437 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '79', 'City': 'Lombard', 'State': 'IL', 'Count': 1, 'latlong': '41.8864687,-88.0201536' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0201536, 41.8864687 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '80', 'City': 'Cary', 'State': 'IL', 'Count': 1, 'latlong': '42.2119684,-88.2381381' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.2381381, 42.2119684 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '81', 'City': 'Fouke', 'State': 'AR', 'Count': 1, 'latlong': '33.261148,-93.8854046' }, 'geometry': { 'type': 'Point', 'coordinates': [ -93.8854046, 33.261148 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '82', 'City': 'Saint Charles', 'State': 'MO', 'Count': 1, 'latlong': '38.783855,-90.481677' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.481677, 38.783855 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '83', 'City': 'East Peoria', 'State': 'IL', 'Count': 1, 'latlong': '40.666149,-89.5800978' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.5800978, 40.666149 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '85', 'City': 'Littleton', 'State': 'IL', 'Count': 1, 'latlong': '40.2339337,-90.6223505' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.6223505, 40.2339337 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '87', 'City': 'Glen Carbon', 'State': 'IL', 'Count': 1, 'latlong': '38.7483814,-89.983158' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.983158, 38.7483814 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '88', 'City': 'Etowah', 'State': 'TN', 'Count': 1, 'latlong': '35.3236458,-84.5248279' }, 'geometry': { 'type': 'Point', 'coordinates': [ -84.5248279, 35.3236458 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '91', 'City': 'Macomb', 'State': 'IL', 'Count': 4, 'latlong': '40.4588934,-90.6713939' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.6713939, 40.4588934 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '95', 'City': 'Rockton', 'State': 'IL', 'Count': 1, 'latlong': '42.4525157,-89.0723317' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.0723317, 42.4525157 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '96', 'City': 'Bensenville', 'State': 'IL', 'Count': 1, 'latlong': '41.9538384,-87.9431781' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9431781, 41.9538384 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '98', 'City': 'Summerfield', 'State': 'FL', 'Count': 1, 'latlong': '29.0085924,-82.0348092' }, 'geometry': { 'type': 'Point', 'coordinates': [ -82.0348092, 29.0085924 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '100', 'City': 'Frankfort', 'State': 'IL', 'Count': 1, 'latlong': '41.4979467,-87.8495946' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8495946, 41.4979467 ] } },
+                    { 'type': 'Feature', 'properties': { 'ID': '101', 'City': 'Glen Ellyn', 'State': 'IL', 'Count': 2, 'latlong': '41.8775293,-88.0670118' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0670118, 41.8775293 ] } }
+                ]
+            }
+        })
+
+        map.addLayer({
+            'id': 'cities',
+            'type': 'circle',
+            'source': 'cities',
+            'paint': {
+                'circle-color': '#fc00e4',
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#ffffff',
+                'circle-radius': [
+                    'match',
+                    ['get', 'Count'],
+                    2,
+                    8,
+                    3,
+                    10,
+                    4,
+                    12,
+                    5,
+                    14,
+                    6,
+                    16,
+                    7,
+                    18,
+                    8,
+                    20,
+                    /* other */ 6
+                ]
+            }
+        });
+
+        map.addLayer({
+            'id': 'cities_label',
+            'type': 'symbol',
+            'source': 'cities',
+            'filter': ['>', 'Count', 1],
+            'minzoom': 7,
+            'layout': {
+                'text-field': [
+                    'number-format',
+                    ['get', 'Count'],
+                    { 'min-fraction-digits': 0, 'max-fraction-digits': 0 }
+                ],
+                'text-font': ['Open Sans ExtraBold', 'Arial Unicode MS Bold'],
+                'text-size': 11
+            },
+            'paint': {
+                'text-color': 'white'
+            }
+        });
+
+        const popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
+        map.addInteraction('places-mouseenter-interaction', {
+            type: 'mouseenter',
+            target: { layerId: 'cities' },
+            handler: (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+
+                // Copy the coordinates from the POI underneath the cursor
+                const coordinates = e.feature.geometry.coordinates.slice();
+                const description = e.feature.properties.City + ', ' + e.feature.properties.State;
+
+                // Populate the popup and set its coordinates based on the feature found.
+                popup.setLngLat(coordinates).setHTML(description).addTo(map);
+            }
+        });
+
+        map.addInteraction('cities-mouseleave-interaction', {
+            type: 'mouseleave',
+            target: { layerId: 'cities' },
+            handler: () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            }
+        });
+    });
+</script>
+
+<!-- Leaflet section -->
+<script type="module">
+    var cities = {
+        "type": "FeatureCollection",
+        "features": [
+            { 'type': 'Feature', 'properties': { 'ID': '1', 'City': 'Niles', 'State': 'IL', 'Count': 1, 'latlong': '42.0289319,-87.8122348' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8122348, 42.0289319 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '2', 'City': 'Edwardsville', 'State': 'IL', 'Count': 1, 'latlong': '38.8114364,-89.953157' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.953157, 38.8114364 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '3', 'City': 'Rossville', 'State': 'IL', 'Count': 1, 'latlong': '40.3792031,-87.6686342' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.6686342, 40.3792031 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '4', 'City': 'Hudson', 'State': 'IL', 'Count': 1, 'latlong': '40.6058688,-88.9872965' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.9872965, 40.6058688 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '5', 'City': 'Kenilworth', 'State': 'IL', 'Count': 1, 'latlong': '42.0894728,-87.7149295' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.7149295, 42.0894728 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '6', 'City': 'Troy', 'State': 'IL', 'Count': 1, 'latlong': '38.7292147,-89.8831541' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.8831541, 38.7292147 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '7', 'City': 'Loda', 'State': 'IL', 'Count': 1, 'latlong': '40.5175349,-88.0719857' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0719857, 40.5175349 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '8', 'City': 'Bloomington', 'State': 'IL', 'Count': 2, 'latlong': '40.4797828,-88.9939147' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.9939147, 40.4797828 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '9', 'City': 'Galesburg', 'State': 'IL', 'Count': 1, 'latlong': '40.9475652,-90.3712169' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.3712169, 40.9475652 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '10', 'City': 'Darien', 'State': 'IL', 'Count': 1, 'latlong': '41.7508713,-87.9739593' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9739593, 41.7508713 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '11', 'City': 'Chicago', 'State': 'IL', 'Count': 7, 'latlong': '41.8755616,-87.6244212' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.6244212, 41.8755616 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '12', 'City': 'Elmwood', 'State': 'IL', 'Count': 1, 'latlong': '40.7778151,-89.9665017' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.9665017, 40.7778151 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '13', 'City': 'Carlock', 'State': 'IL', 'Count': 1, 'latlong': '40.5822588,-89.1320251' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.1320251, 40.5822588 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '14', 'City': 'Arlington Heights', 'State': 'IL', 'Count': 1, 'latlong': '42.0811563,-87.9802164' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9802164, 42.0811563 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '15', 'City': 'Winnetka', 'State': 'IL', 'Count': 1, 'latlong': '42.1080703,-87.7365286' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.7365286, 42.1080703 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '16', 'City': 'Grayslake', 'State': 'IL', 'Count': 3, 'latlong': '42.3433518,-88.0412192' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0412192, 42.3433518 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '17', 'City': 'East Peoria', 'State': 'IL', 'Count': 2, 'latlong': '40.666149,-89.5800978' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.5800978, 40.666149 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '18', 'City': 'Normal', 'State': 'IL', 'Count': 4, 'latlong': '40.5092961,-88.9843937' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.9843937, 40.5092961 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '19', 'City': 'El Paso', 'State': 'IL', 'Count': 1, 'latlong': '40.7392018,-89.0164626' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.0164626, 40.7392018 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '20', 'City': 'Rochester Hills', 'State': 'MI', 'Count': 1, 'latlong': '42.6583661,-83.1499322' }, 'geometry': { 'type': 'Point', 'coordinates': [ -83.1499322, 42.6583661 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '21', 'City': 'Springfield', 'State': 'IL', 'Count': 3, 'latlong': '39.7990175,-89.6439575' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.6439575, 39.7990175 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '22', 'City': 'York', 'State': 'IL', 'Count': 1, 'latlong': '39.1714288,-87.6391922' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.6391922, 39.1714288 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '23', 'City': 'Rock Island', 'State': 'IL', 'Count': 1, 'latlong': '41.4411786,-90.5766144' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.5766144, 41.4411786 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '24', 'City': 'Victoria', 'State': 'Australia', 'Count': 1, 'latlong': '-36.5986096,144.6780052' }, 'geometry': { 'type': 'Point', 'coordinates': [ 144.6780052, -36.5986096 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '25', 'City': 'Glenview', 'State': 'IL', 'Count': 1, 'latlong': '42.0700662,-87.8114044' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8114044, 42.0700662 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '26', 'City': 'Ithaca', 'State': 'NY', 'Count': 1, 'latlong': '42.437417499999995,-76.54837235139263' }, 'geometry': { 'type': 'Point', 'coordinates': [ -76.548372351392629, 42.4374175 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '27', 'City': 'Marengo', 'State': 'IL', 'Count': 1, 'latlong': '42.250149,-88.6081303' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.6081303, 42.250149 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '28', 'City': 'Mount Prospect', 'State': 'IL', 'Count': 2, 'latlong': '42.0664167,-87.9372908' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9372908, 42.0664167 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '29', 'City': 'Evanston', 'State': 'IL', 'Count': 1, 'latlong': '42.0470043,-87.6846053' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.6846053, 42.0470043 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '30', 'City': 'Kildeer', 'State': 'IL', 'Count': 1, 'latlong': '42.1705807,-88.0478532' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0478532, 42.1705807 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '35', 'City': 'Red Bud', 'State': 'IL', 'Count': 1, 'latlong': '38.2117173,-89.9942741' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.9942741, 38.2117173 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '36', 'City': 'Harwood Heights', 'State': 'IL', 'Count': 1, 'latlong': '41.9669615,-87.8076726' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8076726, 41.9669615 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '38', 'City': 'Newburg', 'State': 'MO', 'Count': 1, 'latlong': '37.9142075,-91.9026607' }, 'geometry': { 'type': 'Point', 'coordinates': [ -91.9026607, 37.9142075 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '39', 'City': 'Woodridge', 'State': 'IL', 'Count': 1, 'latlong': '41.7563344,-88.045559' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.045559, 41.7563344 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '40', 'City': 'Charleston', 'State': 'IL', 'Count': 1, 'latlong': '39.4961458,-88.1761521' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.1761521, 39.4961458 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '41', 'City': 'Caseyville', 'State': 'IL', 'Count': 1, 'latlong': '38.6367162,-90.0256606' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.0256606, 38.6367162 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '43', 'City': 'Chatham', 'State': 'IL', 'Count': 1, 'latlong': '39.676163,-89.7045439' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.7045439, 39.676163 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '44', 'City': 'Metamora', 'State': 'IL', 'Count': 1, 'latlong': '40.7907409,-89.3614407' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.3614407, 40.7907409 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '45', 'City': 'Tremont', 'State': 'IL', 'Count': 3, 'latlong': '40.5275392,-89.4925979' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.4925979, 40.5275392 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '48', 'City': 'St. Charles', 'State': 'IL', 'Count': 2, 'latlong': '41.9139808,-88.3128183' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.3128183, 41.9139808 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '50', 'City': 'Sioux City', 'State': 'IA', 'Count': 1, 'latlong': '42.4966815,-96.4058782' }, 'geometry': { 'type': 'Point', 'coordinates': [ -96.4058782, 42.4966815 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '51', 'City': 'Mt Prospect', 'State': 'IL', 'Count': 1, 'latlong': '42.0664167,-87.9372908' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9372908, 42.0664167 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '54', 'City': 'Swansea', 'State': 'IL', 'Count': 1, 'latlong': '38.5339392,-89.9889936' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.9889936, 38.5339392 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '55', 'City': 'Urbana', 'State': 'IL', 'Count': 1, 'latlong': '40.1117174,-88.207301' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.207301, 40.1117174 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '56', 'City': 'McHenry', 'State': 'IL', 'Count': 1, 'latlong': '42.3294391,-88.4605713' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.4605713, 42.3294391 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '57', 'City': 'Maryland Heights', 'State': 'MO', 'Count': 1, 'latlong': '38.7150511,-90.435999' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.435999, 38.7150511 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '58', 'City': 'New Albany', 'State': 'IN', 'Count': 1, 'latlong': '38.2856247,-85.8241312' }, 'geometry': { 'type': 'Point', 'coordinates': [ -85.8241312, 38.2856247 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '59', 'City': 'OFallon', 'State': 'IL', 'Count': 1, 'latlong': '38.5922715,-89.9112124' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.9112124, 38.5922715 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '60', 'City': 'Thomson', 'State': 'IL', 'Count': 1, 'latlong': '41.9589158,-90.0992924' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.0992924, 41.9589158 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '61', 'City': 'Wilmette', 'State': 'IL', 'Count': 1, 'latlong': '42.076066,-87.7115555' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.7115555, 42.076066 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '62', 'City': 'Mt Sterling', 'State': 'IL', 'Count': 1, 'latlong': '39.9872707,-90.763463' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.763463, 39.9872707 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '63', 'City': 'Poplar Grove', 'State': 'IL', 'Count': 1, 'latlong': '42.3683522,-88.822047' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.822047, 42.3683522 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '64', 'City': 'Sand Lake', 'State': 'MI', 'Count': 1, 'latlong': '43.29238,-85.518073' }, 'geometry': { 'type': 'Point', 'coordinates': [ -85.518073, 43.29238 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '66', 'City': 'Hanover Park', 'State': 'IL', 'Count': 1, 'latlong': '41.9994722,-88.1450735' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.1450735, 41.9994722 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '67', 'City': 'Utica', 'State': 'IL', 'Count': 1, 'latlong': '41.3405897,-89.010081' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.010081, 41.3405897 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '68', 'City': 'Elk Grove Village', 'State': 'IL', 'Count': 1, 'latlong': '42.0087978,-87.9414608' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9414608, 42.0087978 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '69', 'City': 'Royal Palm Beach', 'State': 'FL', 'Count': 1, 'latlong': '26.7050822,-80.2279519' }, 'geometry': { 'type': 'Point', 'coordinates': [ -80.2279519, 26.7050822 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '70', 'City': 'Bryan', 'State': 'TX', 'Count': 1, 'latlong': '30.6743643,-96.3699632' }, 'geometry': { 'type': 'Point', 'coordinates': [ -96.3699632, 30.6743643 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '71', 'City': 'Naperville', 'State': 'IL', 'Count': 1, 'latlong': '41.7728699,-88.1479278' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.1479278, 41.7728699 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '72', 'City': 'Scottsdale', 'State': 'AZ', 'Count': 1, 'latlong': '33.4942189,-111.926018' }, 'geometry': { 'type': 'Point', 'coordinates': [ -111.926018, 33.4942189 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '73', 'City': 'Morton Grove', 'State': 'IL', 'Count': 1, 'latlong': '42.0405857,-87.7825696' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.7825696, 42.0405857 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '74', 'City': 'Elgin', 'State': 'IL', 'Count': 2, 'latlong': '42.03726,-88.2810994' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.2810994, 42.03726 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '75', 'City': 'Orland Hills', 'State': 'IL', 'Count': 1, 'latlong': '41.5853107,-87.8431078' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8431078, 41.5853107 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '76', 'City': 'Mokena', 'State': 'IL', 'Count': 1, 'latlong': '41.5261437,-87.8892189' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8892189, 41.5261437 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '79', 'City': 'Lombard', 'State': 'IL', 'Count': 1, 'latlong': '41.8864687,-88.0201536' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0201536, 41.8864687 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '80', 'City': 'Cary', 'State': 'IL', 'Count': 1, 'latlong': '42.2119684,-88.2381381' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.2381381, 42.2119684 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '81', 'City': 'Fouke', 'State': 'AR', 'Count': 1, 'latlong': '33.261148,-93.8854046' }, 'geometry': { 'type': 'Point', 'coordinates': [ -93.8854046, 33.261148 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '82', 'City': 'Saint Charles', 'State': 'MO', 'Count': 1, 'latlong': '38.783855,-90.481677' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.481677, 38.783855 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '83', 'City': 'East Peoria', 'State': 'IL', 'Count': 1, 'latlong': '40.666149,-89.5800978' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.5800978, 40.666149 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '85', 'City': 'Littleton', 'State': 'IL', 'Count': 1, 'latlong': '40.2339337,-90.6223505' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.6223505, 40.2339337 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '87', 'City': 'Glen Carbon', 'State': 'IL', 'Count': 1, 'latlong': '38.7483814,-89.983158' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.983158, 38.7483814 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '88', 'City': 'Etowah', 'State': 'TN', 'Count': 1, 'latlong': '35.3236458,-84.5248279' }, 'geometry': { 'type': 'Point', 'coordinates': [ -84.5248279, 35.3236458 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '91', 'City': 'Macomb', 'State': 'IL', 'Count': 4, 'latlong': '40.4588934,-90.6713939' }, 'geometry': { 'type': 'Point', 'coordinates': [ -90.6713939, 40.4588934 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '95', 'City': 'Rockton', 'State': 'IL', 'Count': 1, 'latlong': '42.4525157,-89.0723317' }, 'geometry': { 'type': 'Point', 'coordinates': [ -89.0723317, 42.4525157 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '96', 'City': 'Bensenville', 'State': 'IL', 'Count': 1, 'latlong': '41.9538384,-87.9431781' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.9431781, 41.9538384 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '98', 'City': 'Summerfield', 'State': 'FL', 'Count': 1, 'latlong': '29.0085924,-82.0348092' }, 'geometry': { 'type': 'Point', 'coordinates': [ -82.0348092, 29.0085924 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '100', 'City': 'Frankfort', 'State': 'IL', 'Count': 1, 'latlong': '41.4979467,-87.8495946' }, 'geometry': { 'type': 'Point', 'coordinates': [ -87.8495946, 41.4979467 ] } },
+            { 'type': 'Feature', 'properties': { 'ID': '101', 'City': 'Glen Ellyn', 'State': 'IL', 'Count': 2, 'latlong': '41.8775293,-88.0670118' }, 'geometry': { 'type': 'Point', 'coordinates': [ -88.0670118, 41.8775293 ] } }
+        ]
+    };
+
+    import L, {Map, TileLayer, Marker, Popup, GeoJSON, FeatureGroup, CircleMarker} from 'leaflet';
+
+    const map = new Map('leaflet').setView([40, -89], 7);
+
+    const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    new GeoJSON(cities, {
+        pointToLayer: function (feature, latlng) {
+            var x = feature.properties.Count * 2;
+            return new CircleMarker(latlng, {
+                radius: x,
+                fillColor: "#fc00e4",
+                color: "#fff",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 1
+            });
+        }
+    }).bindPopup(function (layer) {
+        return layer.feature.properties.City + ', ' + layer.feature.properties.State;
+    }).addTo(map);
+
+</script>
+
+</body>
+</html>
